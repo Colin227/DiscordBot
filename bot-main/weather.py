@@ -62,7 +62,7 @@ def getForecast(response):
 # Add arguments to dictionary for url
 # can change postal code to be for each user
 #payload = {'key': config.weather_api, 'q': 'K9H3E4'} 
-#r = requests.get('http://api.weatherapi.com/v1/forecast.json?key=b6260ab938fc4466a4033601212411&q=K9H3E4&aqi=no')
+
 
 # Request weather data based on user location
 
