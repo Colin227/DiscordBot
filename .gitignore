@@ -1,0 +1,4 @@
+config.py
+bot-env/
+workspace.code-workspace
+__pycache__/
