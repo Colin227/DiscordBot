@@ -26,16 +26,15 @@ async def on_message(message):
     if message.author == client.user:
         return
     
-    # goodnight Mat 
-    if message.content.startswith('!'): # change to if message starts with '!'
+    # All commands start with an exclamation point, and the proceeding text differentiates between them
+    if message.content.startswith('!'):
         #await message.channel.send(file=discord.File('./img/goodnight.mp4'))
+        # Assign the command and usernames to variables -- not entirely necessary - could pass message object directly
         msg = message.content
         usr = message.author.display_name
+
+        # build the bot message wiht the getMessage handler, then send it to discord server
         botMessage = getMessage.getCommand(msg, usr, message.author)
         await message.channel.send(botMessage)
-
-# function that returns a string of the command
-# match case statement
-
 
 client.run(config.api_token)
