@@ -10,7 +10,7 @@ hide the user's location and weather api key.
 
 '''
 
-def getWeather(usrDisplayName):
+def getWeather(usrDisplayName, weatherRequestDay):
     # Look for username, then assign api key and appropriate location query to payload.
     # Keep api key and location as private in config file.
     match str(usrDisplayName):
@@ -29,27 +29,36 @@ def getWeather(usrDisplayName):
             # Default postal code if no match for user. Default postal code is a familiar area to most members of discord server. 
             # TODO: update this to return error message or other default behaviour.
             payload = {'key': config.weather_api, 'q': 'K0L1L0'} 
-
+    
     # Make our http request and pass in payload with api key and location information
     # TODO: handle request errors
     r = requests.get('http://api.weatherapi.com/v1/forecast.json', params=payload)
     response = r.json()
-    
-    # Create formatted string for bot response with current weather and location information
-    currentWeather = f'The weather in {response["location"]["name"]} is currently {response["current"]["temp_c"]} degrees celcius.'
+    if (weatherRequestDay == "current"):
+        currentWeather = f'The weather in {response["location"]["name"]} is currently {response["current"]["temp_c"]} degrees celcius.'
+    else:
+        currentWeather = getForecast(response)
     return currentWeather
+
+    # Create formatted string for bot response with current weather and location information
+    
 
 
 # Was creating this function to format the weather data and return a string
 # Will likely make this function be used for string formatting depending on weather request.
 # TODO: Handle all weather string formatting for current weather, forecast weather, and conditions
 # Then update getWeather function to respond differently based on weather request 
-def prettyWeather(response, usrDisplayName):
-    #currentWeather = "The weather in " + response['location'] + " is currently " + response['current']['temp_c']
-    currentWeather = f'The weather in {response["location"]["name"]} is currently {response["current"]["temp_c"]}'
+# def forecastWeather(response, usrDisplayName):
+#     #currentWeather = "The weather in " + response['location'] + " is currently " + response['current']['temp_c']
+#     currentWeather = f'The weather in {response["location"]["name"]} is currently {response["current"]["temp_c"]}'
     
-
-
+def getForecast(response):
+    location = response["location"]["name"]
+    forecastMaxTemp = response["forecast"]["forecastday"][0]["day"]["maxtemp_c"]
+    forecastMinTemp = response["forecast"]["forecastday"][0]["day"]["mintemp_c"]
+    forecastCondition = response["forecast"]["forecastday"][0]["day"]["condition"]["text"]
+    forecastWeather = f'The weather in {location} tomorrow will be a high of {forecastMaxTemp} degrees celcius and a low of {forecastMinTemp} degrees celcius. It will be {forecastCondition}.'
+    return forecastWeather
 # Add arguments to dictionary for url
 # can change postal code to be for each user
 #payload = {'key': config.weather_api, 'q': 'K9H3E4'} 

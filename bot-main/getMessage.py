@@ -20,12 +20,13 @@ def getCommand(msg, usr, usrId):
     match msg:
         case '!goodnight':
             #tmpString = "Goodnight " + str(usr).split('#')[0] # was used for retrieving account name without user id #
-            tmpString = 'Goodnight ' + str(usr) # Changed to pass nickname to getCommand function now
+            currentWeather = weather.getWeather(usrId, "forecast")
+            tmpString = 'Goodnight ' + str(usr) + "! " + str(currentWeather) # Changed to pass nickname to getCommand function now
             return tmpString
         case '!goodmorning':
             # Get current weather info. Pass username as argument which will be used to look up
             # hard coded location information in order to return local weather information.
-            currentWeather = weather.getWeather(usrId)
+            currentWeather = weather.getWeather(usrId, "current")
             tmpString = 'Good morning ' + str(usr) + "! " + currentWeather
             return tmpString
         case '!joke':
