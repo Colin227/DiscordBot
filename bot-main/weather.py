@@ -35,6 +35,10 @@ def getWeather(usrDisplayName, weatherRequestDay):
     r = requests.get('http://api.weatherapi.com/v1/forecast.json', params=payload)
     response = r.json()
     if (weatherRequestDay == "current"):
+        # currentWeatherDict = {
+        #     'location': response['location']['name'],
+        #     'currentTemp': response['current']['temp_c'],
+        # }
         currentWeather = f'The weather in {response["location"]["name"]} is currently {response["current"]["temp_c"]} degrees celcius.'
     else:
         currentWeather = getForecast(response)
@@ -57,6 +61,12 @@ def getForecast(response):
     forecastMaxTemp = response["forecast"]["forecastday"][0]["day"]["maxtemp_c"]
     forecastMinTemp = response["forecast"]["forecastday"][0]["day"]["mintemp_c"]
     forecastCondition = response["forecast"]["forecastday"][0]["day"]["condition"]["text"]
+    # forecastDict = {
+    #     'location': location,
+    #     'forecastMaxTemp' : forecastMaxTemp,
+    #     'forecastMinTemp' : forecastMinTemp,
+    #     'forecastCondition': forecastCondition,
+    #     }
     forecastWeather = f'The weather in {location} tomorrow will be a high of {forecastMaxTemp} degrees celcius and a low of {forecastMinTemp} degrees celcius. It will be {forecastCondition}.'
     return forecastWeather
 # Add arguments to dictionary for url
