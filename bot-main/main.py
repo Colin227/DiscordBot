@@ -1,6 +1,7 @@
 import config 
 import discord
 import getMessage
+import stockTracker
 
 
 from datetime import date
@@ -37,4 +38,10 @@ async def on_message(message):
         botMessage = getMessage.getCommand(msg, usr, message.author)
         await message.channel.send(botMessage)
 
+    if message.content.startswith("$"):
+        botMessage = stockTracker.getStockPrice(message.content)
+        if str(botMessage).endswith('.gif'):
+            await message.channel.send(file=discord.File(botMessage))
+        else:
+            await message.channel.send(botMessage)
 client.run(config.api_token)
