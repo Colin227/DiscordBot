@@ -1,16 +1,10 @@
-# get user message
-# strip '!' from string
-# pass ticker in uppercase to yfinance Ticker()
-# msft.info will return json object
+import pprint # used for testing -- can be removed when complete
 import yfinance as yf
 
-import pprint
-# pprint used for testing
+
 
 def getStockPrice(msg):
     # Strip $ from front of user message
-    # If there are numerical values in the user message, the user is not likely
-    # looking up a stock, (most likely a dollar amount i.e. $123) so we send a money gif
     stockString = str(msg).split("$")[1]
     
 
@@ -38,7 +32,7 @@ def getStockPrice(msg):
         # print("percentChange " + str(round(percentChange, 2)))
         return stockDict
     
-    # Canadian stocks were causing KeyErrors since stock price has different keys
+    # Certain stocks have different key values, so we catch KeyError exception
 
     except KeyError:
         try:
@@ -62,4 +56,5 @@ def getStockPrice(msg):
         }
             return stockDict
         except:
+            # If another exception, return 
             return "STOCK_NOT_FOUND"

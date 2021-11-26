@@ -42,6 +42,7 @@ def getWeather(usrDisplayName, weatherRequestDay):
         currentWeather = f'The weather in {response["location"]["name"]} is currently {response["current"]["temp_c"]} degrees celcius.'
     else:
         currentWeather = getForecast(response)
+        #print(currentWeather)
     return currentWeather
 
     # Create formatted string for bot response with current weather and location information
@@ -57,18 +58,21 @@ def getWeather(usrDisplayName, weatherRequestDay):
 #     currentWeather = f'The weather in {response["location"]["name"]} is currently {response["current"]["temp_c"]}'
     
 def getForecast(response):
-    location = response["location"]["name"]
-    forecastMaxTemp = response["forecast"]["forecastday"][0]["day"]["maxtemp_c"]
-    forecastMinTemp = response["forecast"]["forecastday"][0]["day"]["mintemp_c"]
-    forecastCondition = response["forecast"]["forecastday"][0]["day"]["condition"]["text"]
-    # forecastDict = {
-    #     'location': location,
-    #     'forecastMaxTemp' : forecastMaxTemp,
-    #     'forecastMinTemp' : forecastMinTemp,
-    #     'forecastCondition': forecastCondition,
-    #     }
-    forecastWeather = f'The weather in {location} tomorrow will be a high of {forecastMaxTemp} degrees celcius and a low of {forecastMinTemp} degrees celcius. It will be {forecastCondition}.'
-    return forecastWeather
+    # location = response["location"]["name"]
+    # currentTemp = response["current"]["temp_c"]
+    # forecastMaxTemp = response["forecast"]["forecastday"][0]["day"]["maxtemp_c"]
+    # forecastMinTemp = response["forecast"]["forecastday"][0]["day"]["mintemp_c"]
+    # forecastCondition = response["forecast"]["forecastday"][0]["day"]["condition"]["text"]
+    forecastDict = {
+        'location': response["location"]["name"],
+        'currentTemp': response["current"]["temp_c"],
+        'forecastMaxTemp' : response["forecast"]["forecastday"][0]["day"]["maxtemp_c"],
+        'forecastMinTemp' : response["forecast"]["forecastday"][0]["day"]["mintemp_c"],
+        'forecastCondition': response["forecast"]["forecastday"][0]["day"]["condition"]["text"],
+        'iconUrl': "http:" + response["current"]["condition"]["icon"]
+        }
+    #forecastWeather = f'The weather in {location} tomorrow will be a high of {forecastMaxTemp} degrees celcius and a low of {forecastMinTemp} degrees celcius. It will be {forecastCondition}.'
+    return forecastDict
 # Add arguments to dictionary for url
 # can change postal code to be for each user
 #payload = {'key': config.weather_api, 'q': 'K9H3E4'} 
@@ -90,3 +94,10 @@ def getForecast(response):
 # print(response['forecast']['forecastday'][0]['day']['maxtemp_c'])
 # print(response['forecast']['forecastday'][0]['day']['mintemp_c'])
 # print(response['forecast']['forecastday'][0]['day']['condition']['text'])
+
+def weatherFormatter(self, response):
+    self.location = response["location"]["name"]
+    self.forecastMaxTemp = response["forecast"]["forecastday"][0]["day"]["maxtemp_c"]
+    self.forecastMinTemp = response["forecast"]["forecastday"][0]["day"]["mintemp_c"]
+    self.forecastCondition = response["forecast"]["forecastday"][0]["day"]["condition"]["text"]
+    
