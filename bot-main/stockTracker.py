@@ -55,6 +55,6 @@ def getStockPrice(msg):
                 'logo': stockObject.info['logo_url']
         }
             return stockDict
-        except:
-            # If another exception, return 
+        except: 
+            # If stock is still not found return error string
             return "STOCK_NOT_FOUND"

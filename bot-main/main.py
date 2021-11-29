@@ -4,6 +4,7 @@ import getMessage
 import stockTracker
 from datetime import date
 
+
 # This is a discord bot that will respond to chat messages
 # It will be based off the robot Bender from the TV show Futurama
 
@@ -28,23 +29,20 @@ async def on_message(message):
     # Regular commands start with an exclamation point, and the proceeding text differentiates between them
     if message.content.startswith('!'):
 
-        # build the bot message with the getMessage handler, then send it to discord server
+        # build the bot message with the getMessage handler
         botMessage = getMessage.getCommand(message.content, message.author.display_name, message.author)
-        # possibly return a flag indicating what function to call
-        # weather.getForecast function - should return future weather information
-        # weather.getCurrent function
+
         try:
-            # Look for if botMessage is dict and has items
+            # Check if botMessage returned a dictionary
             weatherDict = botMessage.items()
         except (AttributeError, TypeError):
-            # if it doesn not have items, we returned a string, so send message.
+            # if botMessage does not have items, we returned a string, so send message.
             await message.channel.send(botMessage)
-        else:
-            embed=discord.Embed(title="Weather", description=botMessage["location"], color=0xffbb00)
-            embed.add_field(name=f'Current Temperature: ', value=f'{botMessage["currentTemp"]} C', inline=False)
-            #embed.add_field(name='Tomorrow:', value='  ', inline=False)
-            embed.add_field(name=f'High: ', value=f'{botMessage["forecastMaxTemp"]} C', inline=True)
-            embed.add_field(name=f'Low: ', value=f'{botMessage["forecastMinTemp"]} C', inline=True)
+        else: # TODO: Try/except for creating the embedded message
+            embed=discord.Embed(title=botMessage["location"], description="Weather", color=0xffbb00)
+            embed.add_field(name=f'It is currently', value=f'{botMessage["currentTemp"]} C and {botMessage["currentCondition"].lower()}', inline=False)
+            embed.add_field(name='Tomorrow will be:', value=f'{botMessage["forecastAvgTemp"]} C and {botMessage["forecastCondition"].lower()}', inline=False)
+            
             embed.set_thumbnail(url=botMessage["iconUrl"])
             await message.channel.send(embed=embed)
             
@@ -88,3 +86,5 @@ async def on_message(message):
                     await message.channel.send(file=file, embed=embed)
 
 client.run(config.api_token)
+
+

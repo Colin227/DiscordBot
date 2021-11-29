@@ -66,10 +66,14 @@ def getForecast(response):
     forecastDict = {
         'location': response["location"]["name"],
         'currentTemp': response["current"]["temp_c"],
+        'tomorrowDate': response['forecast']['forecastday'][0]['date'],
+        'forecastAvgTemp': response['forecast']['forecastday'][0]['day']['avgtemp_c'],
         'forecastMaxTemp' : response["forecast"]["forecastday"][0]["day"]["maxtemp_c"],
         'forecastMinTemp' : response["forecast"]["forecastday"][0]["day"]["mintemp_c"],
         'forecastCondition': response["forecast"]["forecastday"][0]["day"]["condition"]["text"],
-        'iconUrl': "http:" + response["current"]["condition"]["icon"]
+        'forecastIconUrl': response["forecast"]["forecastday"][0]["day"]["condition"]["icon"],
+        'iconUrl': "http:" + response["current"]["condition"]["icon"],
+        'currentCondition': response["current"]["condition"]["text"],
         }
     #forecastWeather = f'The weather in {location} tomorrow will be a high of {forecastMaxTemp} degrees celcius and a low of {forecastMinTemp} degrees celcius. It will be {forecastCondition}.'
     return forecastDict
